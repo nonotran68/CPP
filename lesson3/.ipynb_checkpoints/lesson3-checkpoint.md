@@ -1,4 +1,22 @@
+---
+jupytext:
+  formats: ipynb,md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.2
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
++++ {"jp-MarkdownHeadingCollapsed": true}
+
 ## **Bài 3.1: <u>Lỗi cú pháp và lỗi ngữ nghĩa</u>**
+
++++
 
 Lỗi phần mềm rất phổ biến. Rất dễ mắc phải chúng và khó khăn để tìm ra chúng. Trong chương này, chúng ta sẽ khám phá các chủ đề liên quan đến việc tìm và loại bỏ lỗi trong các chương trình C++ của mình, bao gồm cả việc học cách sử dụng trình gỡ lỗi tích hợp đi kèm với IDE của bạn.
 
@@ -6,9 +24,15 @@ Mặc dù các công cụ và kỹ thuật gỡ lỗi không phải là một ph
 
 Nếu bạn có kinh nghiệm gỡ lỗi chương trình trong một ngôn ngữ lập trình khác, thì phần lớn nội dung này sẽ quen thuộc với bạn.
 
++++
+
 ### **Lỗi cú pháp và lỗi ngữ nghĩa**
 
++++
+
 Lập trình có thể đầy thử thách và C++ là một ngôn ngữ hơi lập dị. Kết hợp cả hai điều đó lại, sẽ có rất nhiều cách để mắc lỗi. Lỗi thường thuộc một trong hai loại: lỗi cú pháp và lỗi ngữ nghĩa (lỗi logic).
+
++++
 
 **Lỗi cú pháp** xảy ra khi bạn viết một câu lệnh không hợp lệ theo ngữ pháp của ngôn ngữ C++. Điều này bao gồm các lỗi như thiếu dấu chấm phẩy, sử dụng các biến chưa được khai báo, dấu ngoặc hoặc ngoặc nhọn không khớp, v.v. Ví dụ, chương trình sau đây chứa một vài lỗi cú pháp:
 
@@ -40,6 +64,7 @@ Khi chương trình của bạn đã được biên dịch chính xác, việc k
 >```
 
 
++++
 
 Thông thường hơn, chúng sẽ chỉ tạo ra giá trị hoặc hành vi sai:
 >```
@@ -84,11 +109,17 @@ hay:
 >}
 >```
 
++++
+
 Trình biên dịch hiện đại đã được cải thiện hơn trong việc phát hiện một số loại lỗi ngữ nghĩa phổ biến (ví dụ: sử dụng biến chưa được khởi tạo). Tuy nhiên, trong hầu hết các trường hợp, trình biên dịch sẽ không thể bắt được hầu hết các loại vấn đề này, vì trình biên dịch được thiết kế để kiểm tra ngữ pháp, không phải ý định của người viết code.
 
 Trong các ví dụ trên, lỗi khá dễ dàng để phát hiện. Nhưng trong hầu hết các chương trình phức tạp, lỗi ngữ nghĩa không dễ dàng tìm thấy bằng cách nhìn trực tiếp vào mã nguồn. Đây là lúc các kỹ thuật gỡ lỗi có thể hữu ích.
 
++++ {"jp-MarkdownHeadingCollapsed": true}
+
 ## **Bài 3.2: <u>Quá trình gỡ lỗi</u>**
+
++++
 
 **Tình huống:** Bạn đã viết một chương trình, nhưng nó không hoạt động chính xác - mã biên dịch tốt, nhưng khi chạy lại cho kết quả không mong đợi. Chắc chắn là có một lỗi logic (semantic error) ở đâu đó. Làm thế nào để tìm ra nó?
 
@@ -98,7 +129,11 @@ Nếu bạn đã tuân theo các thông lệ tốt bằng cách viết từng ph
 
 **Lưu ý về độ phức tạp:** Do chúng ta chư đề cập nhiều chủ đề C++ cho đến thời điểm này, nên các chương trình ví dụ trong chương này sẽ khá cơ bản. Điều đó có thể khiến một số kỹ thuật mà chúng tôi trình bày ở đây có vẻ quá mức cần thiết. Tuy nhiên, hãy nhớ rằng các kỹ thuật này được thiết kế để sử dụng với các chương trình lớn hơn, phức tạp hơn và sẽ hữu ích hơn trong môi trường như vậy (đó là nơi bạn cần chúng nhất).
 
++++
+
 ### **Cách tiếp cận chung để gỡ lỗi**
+
++++
 
 Khi một vấn đề được xác định, việc gỡ lỗi thường bao gồm sáu bước:
 
@@ -123,6 +158,8 @@ Giả sử một buổi tối, bạn đi lấy đá từ ngăn chứa đá trong
 
 **Kiểm tra lại:** Sau khi bật lại điện và đợi qua đêm, máy làm đá mới của bạn bắt đầu tạo đá. Không có vấn đề mới được phát hiện.
 
++++
+
 Bây giờ hãy áp dụng quy trình này cho chương trình đơn giản của chúng ta từ bài học trước:
 >```
 >#include <iostream>
@@ -140,6 +177,8 @@ Bây giờ hãy áp dụng quy trình này cho chương trình đơn giản củ
 >}
 >```
 
++++
+
 Đoạn code này khá hay ở một điểm: lỗi rất rõ ràng, vì câu trả lời sai được in ra màn hình thông qua dòng 10. Điều đó cung cấp cho chúng ta một điểm khởi đầu cho cuộc điều tra của mình.
 
 **Tìm ra nguyên nhân gốc rễ:** Ở dòng 10, chúng ta có thể thấy rằng chúng ta đang truyền các giá trị cố định cho đối số (`5` và `3`), vì vậy không có chỗ cho sai sót ở đây. Vì các đầu vào của hàm `add` là chính xác, nhưng đầu ra lại không, thì rõ ràng là hàm `add` phải tạo ra giá trị không đúng. Câu lệnh duy nhất trong hàm `add` là câu lệnh `return`, đây chính là thủ phạm. Chúng ta đã tìm thấy dòng có vấn đề. Bây giờ, khi chúng ta đã biết cần tập trung sự chú ý vào đâu, việc nhận thấy rằng chúng ta đang trừ thay vì cộng là điều bạn có thể dễ dàng phát hiện thông qua kiểm tra.
@@ -154,13 +193,21 @@ Bây giờ hãy áp dụng quy trình này cho chương trình đơn giản củ
 
 Mặc dù ví dụ này rất đơn giản, nhưng nó minh họa quy trình cơ bản mà bạn sẽ trải qua khi chẩn đoán bất kỳ chương trình nào.
 
++++ {"jp-MarkdownHeadingCollapsed": true}
+
 ## **Bài 3.3: <u>Chiến lược gỡ lỗi</u>**
+
++++
 
 Trong quá trình gỡ lỗi chương trình, trong hầu hết các trường hợp, phần lớn thời gian của bạn sẽ được dành để cố gắng tìm ra vị trí thực sự của lỗi. Khi sự cố được tìm thấy, các bước còn lại (khắc phục sự cố và xác nhận rằng sự cố đã được khắc phục) thường đơn giản hơn nhiều so với việc tìm ra lỗi.
 
 Trong bài học này, chúng ta sẽ bắt đầu khám phá cách tìm lỗi.
 
++++
+
 ### **Tìm ra vấn đề thông qua kiểm tra mã**
+
++++
 
 Giả sử bạn đã nhận thấy một vấn đề và bạn muốn theo dõi nguyên nhân của vấn đề cụ thể đó. Trong nhiều trường hợp (đặc biệt là trong các chương trình nhỏ hơn), chúng ta có thể nhanh chóng xác định được vị trí tiềm ẩn của sự cố.
 
@@ -185,7 +232,11 @@ Thứ nhất, có nhiều mã hơn để xem xét. Xem xét từng dòng code tr
 
 Cuối cùng, lỗi có thể do đưa ra những giả định sai lầm. Gần như không thể phát hiện trực quan một lỗi do đưa ra giả định sai lầm, bởi vì bạn có thể sẽ đưa ra cùng một giả định sai lầm khi kiểm tra mã và không nhận thấy lỗi. Vì vậy, nếu chúng ta có một sự cố mà chúng ta không thể tìm thấy thông qua kiểm tra mã, làm thế nào để chúng ta tìm thấy nó?
 
++++
+
 ### **Tìm ra vấn đề thông qua việc chạy chương trình**
+
++++
 
 May mắn thay, nếu chúng ta không thể tìm thấy sự cố thông qua kiểm tra mã, thì còn một cách khác mà chúng ta có thể thực hiện: chúng ta có thể theo dõi hành vi của chương trình khi nó chạy và cố gắng chẩn đoán sự cố từ đó. Cách tiếp cận này có thể được khái quát thành:
 
@@ -195,7 +246,11 @@ May mắn thay, nếu chúng ta không thể tìm thấy sự cố thông qua ki
 
 Trong phần còn lại của chương này, chúng tôi sẽ thảo luận về các kỹ thuật để hỗ trợ cách tiếp cận này.
 
++++
+
 ### **Tái tạo sự cố**
+
++++
 
 Bước đầu tiên và quan trọng nhất trong việc tìm kiếm vấn đề là khả năng tái tạo vấn đề. Tái tạo sự cố có nghĩa là khiến sự cố xuất hiện một cách nhất quán. Lý do rất đơn giản: rất khó để tìm ra vấn đề trừ khi bạn có thể quan sát thấy nó xảy ra.
 
@@ -203,7 +258,11 @@ Quay trở lại phép loại suy về máy phân phối đá của chúng ta - 
 
 Nếu sự cố phần mềm là hiển nhiên (ví dụ: chương trình bị treo ở cùng một chỗ mỗi lần bạn chạy nó) thì việc tái tạo sự cố có thể rất đơn giản. Tuy nhiên, đôi khi việc tái tạo sự cố có thể khó khăn hơn nhiều. Vấn đề chỉ có thể xảy ra trên một số máy tính nhất định hoặc trong những trường hợp cụ thể (ví dụ: khi người dùng nhập một đầu vào nhất định). Trong những trường hợp như vậy, việc tạo ra một tập hợp các bước tái tạo có thể hữu ích. **Bước tái tạo** (**Reproduction steps**) là một danh sách các bước rõ ràng và chính xác có thể được thực hiện để khiến sự cố tái diễn lại với mức độ dự đoán cao. Mục tiêu là có thể khiến sự cố tái diễn càng nhiều càng tốt, vì vậy chúng ta có thể chạy chương trình nhiều lần và tìm kiếm manh mối để xác định nguyên nhân gây ra sự cố. Nếu sự cố có thể được tái tạo 100% thời gian thì đó là điều lý tưởng, nhưng khả năng tái tạo dưới 100% cũng có thể chấp nhận được. Một sự cố chỉ xảy ra 50% thời gian đơn giản có nghĩa là nó sẽ mất gấp đôi thời gian để chẩn đoán sự cố, vì một nửa thời gian chương trình sẽ không hiển thị sự cố và do đó không cung cấp bất kỳ thông tin chẩn đoán hữu ích nào.
 
++++
+
 ### **Thu hẹp phạm vi sự cố
+
++++
 
 Khi chúng ta đã có thể tái tạo vấn đề một cách hợp lý, bước tiếp theo là xác định vị trí trong code nơi xảy ra vấn đề. Dựa trên bản chất của vấn đề, điều này có thể dễ dàng hoặc khó khăn. Vì mục đích minh họa, giả sử chúng ta không có nhiều ý tưởng về vị trí thực sự của vấn đề. Làm thế nào để chúng ta tìm thấy nó?
 
@@ -229,6 +288,8 @@ Hãy tưởng tượng bạn đang chơi Hi-Lo với một người bạn:
 
 Trong trò chơi ở trên, bạn không cần phải đoán mọi số để tìm ra số tôi đang nghĩ. Thông qua quá trình đưa ra các phán đoán và xem xét thông tin bạn học được từ mỗi phán đoán, bạn có thể "thu hẹp" phạm vi tìm kiếm số chính xác chỉ với một vài lần đoán (nếu bạn sử dụng chiến lược tối ưu, bạn luôn có thể tìm ra số tôi đang nghĩ trong 4 lần đoán trở xuống).
 
++++
+
 Quá trình này tương tự như cách thu hẹp phạm vi vấn đề trong gỡ lỗi chương trình.
 
 - **Bắt đầu với phạm vi rộng:** Khi bắt đầu gỡ lỗi, bạn thường không biết chính xác vị trí xảy ra lỗi. Tuy nhiên, bạn biết rằng lỗi phải nằm ở đâu đó trong đoạn mã được thực thi giữa đầu chương trình và điểm chương trình hiển thị triệu chứng không chính xác đầu tiên mà bạn có thể quan sát được.
@@ -238,6 +299,8 @@ Quá trình này tương tự như cách thu hẹp phạm vi vấn đề trong g
 - **Sử dụng các kỹ thuật gỡ lỗi:** Có nhiều kỹ thuật gỡ lỗi khác nhau có thể giúp bạn thu hẹp phạm vi vấn đề, chẳng hạn như đặt điểm ngắt, theo dõi biến và phân tích luồng chương trình.
 
 **Mục tiêu:** Việc thu hẹp phạm vi vấn đề giúp bạn xác định vị trí lỗi một cách nhanh chóng và hiệu quả, tiết kiệm thời gian và công sức cho quá trình gỡ lỗi.
+
++++
 
 Phép chơi Hi-Lo tuy hữu ích nhưng không hoàn toàn chính xác khi áp dụng vào việc gỡ lỗi chương trình. Đôi khi, chúng ta có thể loại bỏ hoàn toàn một số đoạn mã khỏi quá trình xem xét mà không thu được bất kỳ thông tin nào về việc vấn đề thực sự nằm trước hay sau đoạn mã đó.
 
@@ -249,11 +312,19 @@ Chiến lược phán đoán nào bạn muốn sử dụng phụ thuộc vào b�
 
 Vậy làm thế nào để chúng ta "đưa ra những phán đoán"? Có nhiều cách để thực hiện việc này. Chúng ta sẽ bắt đầu với một số cách tiếp cận đơn giản trong chương tiếp theo, sau đó chúng ta sẽ xây dựng dựa trên những cách này và khám phá các cách khác trong các chương sau.
 
++++ {"jp-MarkdownHeadingCollapsed": true}
+
 ## **Bài 3.4: <u>Các chiến thuật gỡ lỗi cơ bản </u>**
+
++++
 
 Trong bài học trước, chúng ta đã khám phá một chiến lược để tìm ra vấn đề bằng cách chạy chương trình và sử dụng phỏng đoán để xác định vị trí của sự cố. Trong bài học này, chúng ta sẽ khám phá một số chiến thuật cơ bản để thực hiện những phỏng đoán đó và thu thập thông tin giúp tìm ra sự cố.
 
++++
+
 ### **Chiến thuật gỡ lỗi #1: Ghi chú code**
+
++++
 
 **Ghi chú code (comment out code)** là một chiến thuật gỡ lỗi đơn giản nhưng hiệu quả giúp loại trừ những phần code không liên quan đến vấn đề đang gặp phải.
 
@@ -290,6 +361,8 @@ Giả sử chương trình này được cho là in ra các tên theo thứ tự
 >- *Vấn đề vẫn tiếp tục:* Phần code được ghi chú không liên quan đến lỗi.
 >- *Vấn đề thay đổi:* Phần code được ghi chú có thể đang thực hiện một tác vụ quan trọng ảnh hưởng đến các phần code khác.
 
++++
+
 >**Chú ý:**<br>
 >Trong khi sử dụng chú thích code để gỡ lỗi, bạn cần lưu ý đến những điều sau:
 >- **Không quên bỏ ghi chú code sau khi gỡ lỗi:** Sau khi xác định được phần code gây ra lỗi, bạn cần bỏ ghi chú lại phần code đó để chương trình có thể hoạt động bình thường. Quá trình gỡ lỗi thường bao gồm nhiều lần thêm, xóa và ghi chú/bỏ ghi chú code. Nếu bạn quên bỏ ghi chú một đoạn code nào đó, chương trình có thể bị lỗi hoặc hoạt động không mong đợi.
@@ -300,7 +373,11 @@ Giả sử chương trình này được cho là in ra các tên theo thứ tự
 >
 >Chúng ta sẽ thảo luận về các thư viện chỉ có tiêu đề trong bài 5.7 -- Các hàm và biến nội tuyến.
 
++++
+
 ### **Chiến thuật gỡ lỗi #2: Kiểm tra luồng thực thi code**
+
++++
 
 Trong các chương trình phức tạp, một vấn đề thường gặp là việc một hàm được gọi quá nhiều lần, quá ít lần (hoặc thậm chí không được gọi).
 
@@ -412,8 +489,11 @@ Bây giờ chương trình sẽ tạo ra đầu ra chính xác:
 Và chúng ta có thể xóa các lệnh gỡ lỗi tạm thời.
 
 
++++
 
 ### **Chiến thuật gỡ lỗi #3: In giá trị biến**
+
++++
 
 Một số lỗi trong chương trình có thể liên quan đến việc tính toán hoặc truyền sai giá trị biến.
 
@@ -466,6 +546,7 @@ Kết quả chạy của chương trình này:
 >```
 
 
++++
 
 Kết quả không chính xác. Bạn có phát hiện ra lỗi không? Ngay cả trong chương trình ngắn này, việc xác định lỗi cũng có thể khó khăn. Hãy thêm một số lệnh gỡ lỗi để kiểm tra giá trị của các biến:
 >```
@@ -582,7 +663,11 @@ Bây giờ chương trình sẽ hoạt động chính xác và bạn có thể x
 
 In giá trị biến là một chiến thuật gỡ lỗi hữu ích giúp bạn theo dõi giá trị của biến tại các điểm khác nhau trong chương trình. Bằng cách kiểm tra giá trị của biến, bạn có thể xác định chính xác vị trí xảy ra lỗi và sửa chữa nó một cách hiệu quả.
 
++++
+
 ### **Một ví dụ khác**
+
++++
 
 Chương trình này rất giống với chương trình trước đó, nhưng cũng không hoạt động như mong đợi:
 >```
@@ -624,6 +709,8 @@ Chạy đoạn code này và nhận được kết quả:
 >Enter a number: 3
 >The answer is: 5
 >```
+
++++
 
 Ồ, có gì đó không ổn. Nhưng ở đâu?
 
@@ -729,6 +816,7 @@ Bây giờ chúng ta có thể thấy ngay vấn đề: Người dùng nhập gi
 >}
 >```
 
++++
 
 Bây giờ hãy chạy lại chương trình với cùng thông tin đầu vào:
 
@@ -820,7 +908,11 @@ Bây giờ đầu ra là:
 
 Chương trình hiện hoạt động chính xác. Ngay cả khi không hiểu `--` làm gì, chúng ta vẫn có thể xác định dòng mã cụ thể gây ra sự cố và sau đó khắc phục sự cố.
 
++++
+
 ### **Những hạn chế của việc sử dụng lệnh in để gỡ lỗi**
+
++++
 
 Mặc dù việc thêm lệnh in vào chương trình để chẩn đoán lỗi là một kỹ thuật phổ biến và hiệu quả (đặc biệt khi không có trình gỡ lỗi), nó không thực sự tốt vì một số lý do sau:
 1. **Lệnh in làm lộn xộn mã code:**<br>
@@ -836,7 +928,11 @@ Lệnh in thường chỉ dành cho một phiên gỡ lỗi cụ thể. Sau khi 
 
 Trong các bài học sau, bạn sẽ khám phá các kỹ thuật gỡ lỗi tiên tiến hơn có thể giải quyết những hạn chế này. Các kỹ thuật này có thể bao gồm sử dụng trình gỡ lỗi, một công cụ chuyên dụng cho phép bạn từng bước thực hiện mã code và kiểm tra giá trị của các biến tại bất kỳ điểm nào. Bạn cũng có thể tìm hiểu về các khung gỡ lỗi có thể được sử dụng để ghi lại các sự kiện quan trọng trong quá trình thực thi chương trình, giúp bạn dễ dàng theo dõi các vấn đề hơn.
 
++++ {"jp-MarkdownHeadingCollapsed": true}
+
 ## **Bài 3.5: <u>Các chiến thuật gỡ lỗi cơ bản (tiếp theo)</u>** 
+
++++
 
 Trong bài học trước (3.4 - Các chiến thuật gỡ lỗi cơ bản), chúng ta đã bắt đầu tìm hiểu cách gỡ lỗi thủ công các vấn đề. Trong bài học đó, chúng ta đã chỉ ra một số hạn chế của việc sử dụng lệnh in để xuất văn bản gỡ lỗi:
 - Lệnh in làm lộn xộn mã code.
@@ -846,7 +942,11 @@ Trong bài học trước (3.4 - Các chiến thuật gỡ lỗi cơ bản), ch�
 
 **Chúng ta có thể cải thiện một số vấn đề này.** Trong bài học này, chúng ta sẽ khám phá một số kỹ thuật cơ bản để thực hiện việc đó.
 
++++
+
 ### **Điều kiện hóa mã gỡ lỗi**
+
++++
 
 Hãy xem xét chương trình sau đây chứa một số lệnh in gỡ lỗi:
 >```
@@ -906,7 +1006,11 @@ Bây giờ chúng ta có thể bật gỡ lỗi đơn giản bằng cách commen
 
 Cách này giải quyết vấn đề phải xóa các lệnh gỡ lỗi và rủi ro khi làm như vậy, nhưng đổi lại, mã code sẽ bị thêm nhiều dòng hơn. Một nhược điểm khác của phương pháp này là nếu bạn đánh máy sai (ví dụ: đánh sai `"DEBUG"`) hoặc quên đưa file header vào một file code, thì một phần hoặc toàn bộ chức năng gỡ lỗi cho file đó có thể không được bật. Vì vậy, mặc dù phương pháp này tốt hơn so với phiên bản không điều kiện, nhưng vẫn còn chỗ để cải thiện.
 
++++
+
 ### **Sử dụng Logger**
+
++++
 
 Một cách tiếp cận khác để gỡ lỗi có điều kiện thông qua bộ tiền xử lý là gửi thông tin gỡ lỗi của bạn đến một **log**. **Log** là một bản ghi tuần tự các sự kiện đã xảy ra, thường được gắn dấu thời gian. Quá trình tạo log được gọi là **logging (ghi log)**. Thông thường, log được ghi vào một file trên ổ đĩa (gọi là file log) để có thể xem lại sau này. Hầu hết các ứng dụng và hệ điều hành đều ghi file log có thể được sử dụng để giúp chẩn đoán các sự cố xảy ra.
 
@@ -951,6 +1055,8 @@ C++ chứa một luồng đầu ra được đặt tên là `std::clog` được
 >2018-12-26 20:03:33.296 DEBUG [4752] [getUserInput@7] getUserInput() called
 >```
 
++++
+
 Mỗi dòng trong file log đại diện cho một thông tin gỡ lỗi được ghi ra.
 
 Các thông tin bao gồm:
@@ -980,7 +1086,11 @@ Trong bài học này, chúng tôi đã sử dụng thư viện `plog` để min
 >**Lời khuyên:**<br>
 >Trong các dự án lớn hoặc yêu cầu hiệu suất cao, bạn nên cân nhắc sử dụng các logger nhanh hơn và nhiều tính năng hơn, chẳng hạn như `spdlog`.
 
++++
+
 ## **Bài 3.6: <u>Sử dụng Trình gỡ lỗi tích hợp (integrated debugger): Stepping</u>**
+
++++
 
 Khi bạn chạy chương trình, quá trình thực thi bắt đầu từ đầu hàm `main`, sau đó tiến hành tuần tự từng câu lệnh cho đến khi chương trình kết thúc. Tại bất kỳ thời điểm nào khi chương trình đang chạy, chương trình sẽ theo dõi rất nhiều thứ: giá trị của các biến bạn đang sử dụng, các hàm đã được gọi (để khi các hàm đó trả về, chương trình sẽ biết quay lại từ đâu), và điểm thực thi hiện tại trong chương trình (để biết câu lệnh nào cần thực thi tiếp theo). Tất cả thông tin được theo dõi này được gọi là **trạng thái chương trình** (hay ngắn gọn là **trạng thái**).
 
@@ -992,7 +1102,11 @@ Bên cạnh các kỹ thuật đã trình bày cho đến nay, còn một giả 
 
 Tuy nhiên, điều gì sẽ xảy ra nếu chúng ta có thể loại bỏ giả định này? May mắn thay, hầu hết các IDE hiện đại đều đi kèm với một công cụ tích hợp gọi là **debugger** được thiết kế để thực hiện chính xác việc này.
 
++++
+
 ### **Debugger là gì?**
+
++++
 
 **Debugger (trình gỡ lỗi)** là một chương trình máy tính cho phép lập trình viên kiểm soát cách một chương trình khác thực thi và kiểm tra trạng thái của chương trình đó trong khi chương trình đó đang chạy. Ví dụ, lập trình viên có thể sử dụng debugger để chạy từng dòng chương trình, đồng thời kiểm tra giá trị của các biến. Bằng cách so sánh giá trị thực tế của các biến với giá trị mong đợi, hoặc theo dõi đường dẫn thực thi thông qua code, debugger có thể giúp rất nhiều trong việc theo dõi các lỗi logic (ngữ nghĩa).
 
@@ -1004,6 +1118,8 @@ Sức mạnh của debugger đến từ hai yếu tố: khả năng kiểm soát
 - **Debugger tích hợp (Integrated debugger):** Ngày nay, nhiều IDE hiện đại có một debugger tích hợp - đó là một debugger sử dụng cùng giao diện với trình soạn thảo code, vì vậy bạn có thể gỡ lỗi bằng cùng môi trường mà bạn sử dụng để viết code (thay vì phải chuyển đổi chương trình).
 
 Mặc dù debugger tích hợp rất tiện lợi và được khuyến khích cho người mới bắt đầu, nhưng debugger dòng lệnh vẫn được hỗ trợ tốt và thường được sử dụng trong các môi trường không hỗ trợ giao diện đồ họa (ví dụ: hệ thống nhúng).
+
++++
 
 **Các tính năng của debugger:**
 
@@ -1047,7 +1163,11 @@ Trong phần còn lại của bài học này, chúng ta sẽ tìm hiểu cách 
 >
 >Mở `main.cpp` và bắt đầu gỡ lỗi bằng cách nhấn *F5* hoặc *Ctrl + Shift + P* và chọn *"Debug: Start Debugging and Stop on Entry"*.
 
++++
+
 ### **Kiểm tra từng bước (Stepping)**
+
++++
 
 Bây giờ chúng ta sẽ bắt đầu khám phá debugger bằng cách xem xét một số công cụ gỡ lỗi cho phép kiểm soát cách chương trình thực thi.
 
@@ -1055,9 +1175,15 @@ Bây giờ chúng ta sẽ bắt đầu khám phá debugger bằng cách xem xét
 
 Có một số lệnh kiểm tra từng bước liên quan mà chúng ta sẽ lần lượt tìm hiểu.
 
++++
+
 ### **Step Into (bước vào)**
 
++++
+
 Lệnh **step into (bước vào)** thực hiện câu lệnh tiếp theo trong đường dẫn thực thi thông thường của chương trình, sau đó tạm dừng thực thi chương trình để chúng ta có thể kiểm tra trạng thái của chương trình thông qua debugger. Nếu câu lệnh đang được thực thi chứa một hàm gọi, thì step into sẽ khiến chương trình nhảy đến đầu của hàm được gọi và tạm dừng tại đó.
+
++++
 
 **Ví dụ:**
 >```
@@ -1092,6 +1218,7 @@ Chúng ta hãy gỡ lỗi chương trình này bằng cách sử dụng lệnh *
 >**Đối với các trình biên dịch / IDE khác:**
 Lệnh **step into** thường nằm trong menu *Debug* hoặc *Run*.
 
++++
 
 Khi chương trình của bạn không chạy và bạn thực hiện lệnh gỡ lỗi đầu tiên, bạn có thể thấy một vài điều xảy ra:
 
@@ -1121,6 +1248,8 @@ Chọn **step into** lại để thực thi dấu ngoặc nhọn mở của hàm
 
 Chọn **step into** một lần nữa, lệnh này sẽ thực thi câu lệnh `std::cout << value << '\n'` và di chuyển mũi tên đến dòng 6.
 
++++
+
 >**Mẹo**<br>
 >Trong bài học trước, chúng tôi đã đề cập rằng `std::cout` được đệm, nghĩa là có thể có một khoảng trễ giữa khi bạn yêu cầu `std::cout` in giá trị và khi nó thực sự in. Do đó, bạn có thể không thấy giá trị `5` xuất hiện tại thời điểm này. Để đảm bảo tất cả đầu ra từ `std::cout` được xuất ngay lập tức, bạn có thể tạm thời thêm câu lệnh sau vào đầu hàm `main()`:
 >>`std::cout << std::unitbuf; // Bật tự động đẩy (flush) cho std::cout (để gỡ lỗi)`
@@ -1135,6 +1264,8 @@ Chọn **step into** một lần nữa, lệnh này sẽ thực thi câu lệnh 
 >>```
 >
 >Bạn sẽ cần đảm bảo rằng *macro* tiền xử lý `DEBUG` được định nghĩa, ở đâu đó phía trên câu lệnh này hoặc là một phần trong cài đặt trình biên dịch của bạn.
+
++++
 
 Chọn **step into** một lần nữa để thực thi dấu ngoặc nhọn đóng của hàm `printValue`. Lúc này, `printValue` đã thực thi xong và quyền điều khiển được trả về cho `main`.
 
@@ -1154,8 +1285,11 @@ Chúc mừng! Bạn vừa bước qua tất cả các bước trong chương tr�
 >Trong các bài học tiếp theo, chúng ta sẽ khám phá các lệnh gỡ lỗi khác, một số lệnh có thể không khả dụng trừ khi debugger đã chạy. Nếu lệnh gỡ lỗi mong muốn không khả dụng, hãy sử dụng step into cho code của bạn để khởi động debugger và thử lại.
 
 
++++
 
 ### **Step Over (Bước qua)**
+
++++
 
 Giống như **step into** (bước vào), lệnh **step over** (bước qua) thực thi câu lệnh tiếp theo trong đường dẫn thực thi thông thường của chương trình.
 
@@ -1203,16 +1337,18 @@ Bây giờ, chọn lệnh **step over**.
 Debugger sẽ thực thi hàm `printValue` (in giá trị `5` ra cửa sổ console) và sau đó trả quyền điều khiển cho bạn trên dòng lệnh tiếp theo (dòng `12`).
 Lệnh **step over** cung cấp một cách thuận tiện để bỏ qua các hàm khi bạn đã chắc chắn chúng hoạt động bình thường hoặc không muốn gỡ lỗi chúng ngay bây giờ.
 
++++
 
 ## 3.7
 
++++
+
 ## 3.8
+
++++
 
 ## 3.9
 
-## 3.10
-
-
-```python
+```{code-cell} ipython3
 
 ```
