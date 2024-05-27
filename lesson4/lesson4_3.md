@@ -54,7 +54,7 @@ Có lẽ điều ngạc nhiên là tiêu chuẩn C++ không định nghĩa kích
 
 Trong loạt bài hướng dẫn này, chúng ta sẽ sử dụng cách nhìn đơn giản hóa, bằng cách đưa ra một số giả định hợp lý thường đúng cho các kiến trúc hiện đại:
 - Một byte bằng 8 bit.
-- Bộ nhớ được寻truy xuất theo byte, do đó đối tượng nhỏ nhất là 1 byte.
+- Bộ nhớ được truy xuất theo byte, do đó đối tượng nhỏ nhất là 1 byte.
 - Hỗ trợ dấu phẩy động tuân thủ theo chuẩn IEEE-754.
 - Chúng ta đang sử dụng kiến trúc 32 bit hoặc 64 bit.
 
@@ -84,7 +84,7 @@ Dựa vào những điều kiện trên, chúng ta có thể xác định kích 
 >**Nội dung liên quan**<br>
 >Nếu bạn đang sử dụng C++ trên một hệ thống không tuân theo các giả định của chúng tôi, hoặc chỉ đơn giản là tò mò, bạn có thể tìm thêm thông tin về những gì tiêu chuẩn C++ nói về kích thước tối thiểu của các kiểu dữ liệu khác nhau [ở đây](https://en.cppreference.com/w/cpp/language/types).
 
-### **Toán tử sizeof**
+### **Toán tử `sizeof`**
 
 Để xác định kích thước của các kiểu dữ liệu trên một máy cụ thể, C++ cung cấp một toán tử tên là `sizeof`. Toán tử `sizeof` là toán tử đơn ngôi nhận một kiểu dữ liệu hoặc một biến và trả về kích thước của nó theo byte. Bạn có thể biên dịch và chạy chương trình sau để xem một số kiểu dữ liệu của bạn có kích thước bao nhiêu:
 
