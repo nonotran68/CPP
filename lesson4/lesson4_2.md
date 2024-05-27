@@ -73,3 +73,5 @@ Mặc dù đoạn code này có thể biên dịch trong C++ (vì lý do tương
 ### **Những cách sử dụng `void` khác**
 
 Từ khóa `void` có cách sử dụng thứ ba (nâng cao hơn) trong C++, được đề cập trong phần 19.5 - Con trỏ `void`. Vì chúng ta chưa học về con trỏ, bạn không cần lo lắng về trường hợp này hiện tại.
+
+Tiếp tục nào!

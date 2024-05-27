@@ -1109,10 +1109,1059 @@ Nhớ giữ lại các số 0 ở cuối sau dấu thập phân, loại bỏ cá
 `1.46000e5` (6 chữ số có nghĩa)
 </details>
 
+## **Bài 4.8: <u>Số thực dấu phẩy động (Floating Point Numbers)</u>**
 
-```python
+Số nguyên là lựa chọn tuyệt vời để đếm các số nguyên, nhưng đôi khi chúng ta cần lưu trữ những con số rất lớn (dương hoặc âm), hoặc những con số có phần thập phân. **Biến kiểu số thực (floating point)** là biến có thể lưu trữ một số có phần thập phân, ví dụ như `4320.0`, `-3.33` hoặc `0.01226`. Từ *"floating"* trong tên *"floating point"* ám chỉ việc dấu thập phân có thể "di chuyển" - nghĩa là nó có thể hỗ trợ một số lượng chữ số thay đổi trước và sau dấu thập phân.
 
-```
+>**Mẹo:**<br>
+>Khi viết số thực trong code, dấu phân cách thập phân phải là dấu chấm (`.`). Nếu bạn đến từ quốc gia sử dụng dấu phẩy thập phân, bạn sẽ cần làm quen với việc sử dụng dấu chấm thay thế.
+
+Có ba kiểu dữ liệu số thực phổ biến: `float`, `double` và `long double`. Giống như số nguyên, C++ không xác định kích thước cụ thể của các kiểu này (nhưng đảm bảo kích thước tối thiểu).
+
+Trên các kiến trúc hiện đại, cách biểu diễn số thực gần như luôn tuân theo định dạng nhị phân **IEEE 754** (do William Kahan tạo ra). Trong định dạng này, một `float` chiếm 4 byte, một `double` chiếm 8 byte và một `long double` có thể tương đương với một double (8 byte), 80-bit (thường được làm tròn thành 12 byte) hoặc 16 byte.
+
+Kiểu dữ liệu số thực luôn có dấu (có thể chứa các giá trị dương và âm).
+
+|       Loại      | Kích thước tối thiểu | Kích thước điển hình |
+|:---------------:|:--------------------:|:--------------------:|
+| `float`         | 4 byte               | 4 byte               |
+| `double`        | 8 byte               | 8 byte               |
+| `long double`   | 8 byte               | 8, 12 hoặc 16 byte   |
+
+Dưới đây là một số ví dụ về định nghĩa biến số thực:
+>```
+>float fValue;
+>double dValue;
+>long double ldValue;
+>```
+
+Khi sử dụng hằng số thực (floating point literals), hãy luôn bao gồm ít nhất một chữ số thập phân (ngay cả khi số thập phân là 0). Điều này giúp trình biên dịch hiểu rằng số đó là số thực chứ không phải số nguyên.
+
+>```
+>int x {5};      // 5 là số nguyên
+>double y {5.0}; // 5.0 là số thực (không có hậu tố mặc định là kiểu double)
+>float z {5.0f}; // 5.0 là số thực, hậu tố f nghĩa là kiểu float
+>```
+
+Lưu ý rằng theo mặc định, số thực mặc định là kiểu `double`. Hậu tố `f` được sử dụng để biểu thị một số thực kiểu `float`.
+
+>**Thực hành tốt nhất**<br>
+>Luôn đảm bảo kiểu của số thực bạn sử dụng khớp với kiểu của biến được gán hoặc dùng để khởi tạo. Nếu không, việc chuyển đổi không cần thiết sẽ xảy ra, có thể dẫn đến mất độ chính xác.
+
+### **In ra số thực (Floating Point Numbers)**
+
+**Xét chương trình đơn giản sau:**
+>```
+>#include <iostream>
+>
+>int main() {
+>  std::cout << 5.0 << '\n';
+>  std::cout << 6.7f << '\n';
+>  std::cout << 9876543.21 << '\n';
+>
+>  return 0;
+>}
+>```
+
+Kết quả của chương trình đơn giản này có thể khiến bạn ngạc nhiên:
+>```
+>5
+>6.7
+>9.87654e+06
+>```
+
+
+Trong trường hợp đầu tiên, `std::cout` in ra `5`, mặc dù chúng ta đã nhập `5.0`. Theo mặc định, `std::cout` sẽ không in ra phần thập phân của một số nếu phần thập phân đó bằng 0.
+
+Trong trường hợp thứ hai, số được in ra như mong đợi.
+
+Trong trường hợp thứ ba, nó được in ra ở dạng ký hiệu khoa học (nếu bạn cần ôn lại về dạng ký hiệu khoa học, hãy xem bài học [**4.7:
+Giới thiệu về ký hiệu khoa học**](lesson4_7.ipynb).
+
+### **Phạm vi của số thực dấu phẩy động**
+
+Giả sử sử dụng biểu diễn IEEE 754:
+
+| Kích thước                              | Giới hạn                                                                     | Độ chính xác |
+|-----------------------------------------|------------------------------------------------------------------------------|--------------|
+| 4 byte                                  | ±1.18 x 10<sup>-38</sup> đến ±3.4 x 10<sup>38</sup> and 0.0                  | 6-9 chữ số có nghĩa, thường là 7         | 
+| 8 byte                                  | ±2.23 x 10<sup>-308</sup> đến ±1.80 x 10<sup>308</sup> và 0.0                | 15-18 chữ số có nghĩa, thường là 16     |
+| 80-bit (thường sử dụng 12 hoặc 16 byte) | ±3.36 x 10<sup>-4932</sup> đến ±1.18 x 10<sup>4932</sup> và 0.0              | 18-21 chữ số có nghĩa                   |
+| 16 byte                                 | ±3.36 x 10<sup>-4932</sup> đến ±1.18 x 10<sup>4932</sup> và 0.0              | 33-36 chữ số có nghĩa                   |
+
+Kiểu số thực 80-bit là một ngoại lệ lịch sử. Trên các bộ xử lý hiện đại, nó thường được triển khai bằng cách sử dụng 12 hoặc 16 byte (đây là kích thước tự nhiên hơn để bộ xử lý xử lý).
+
+Có vẻ hơi lạ khi kiểu số thực 80-bit có cùng phạm vi với kiểu số thực 16 byte. Điều này là do chúng có cùng số bit dành cho số mũ - tuy nhiên, số 16 byte có thể lưu trữ nhiều chữ số có nghĩa hơn.
+
+### **Độ chính xác của số thực (Floating Point Precision)**
+
+Hãy xét phân số 1/3. Biểu diễn thập phân của số này là 0.33333333333333... với các chữ số 3 lặp lại vô hạn. Nếu bạn viết con số này ra giấy, đến một lúc nào đó tay bạn sẽ mỏi và cuối cùng bạn sẽ dừng lại. Và con số bạn có được sẽ gần với 0.3333333333... (với các chữ số 3 lặp lại vô hạn) nhưng không chính xác tuyệt đối.
+
+Trên máy tính, một số có độ chính xác vô hạn sẽ yêu cầu bộ nhớ vô hạn để lưu trữ, và chúng ta thường chỉ có 4 hoặc 8 byte cho mỗi giá trị. Bộ nhớ hạn chế này có nghĩa là số thực chỉ có thể lưu trữ một số lượng chữ số có nghĩa nhất định - bất kỳ chữ số có nghĩa bổ sung nào cũng bị mất hoặc được biểu diễn không chính xác. Số thực được lưu trữ thực sự sẽ gần với số mong muốn, nhưng không chính xác. Chúng tôi sẽ cung cấp một ví dụ về điều này trong phần tiếp theo.
+
+**Độ chính xác** của một kiểu số thực xác định số chữ số có nghĩa mà nó có thể biểu diễn mà không mất thông tin.
+
+Số chữ số có nghĩa của một kiểu số thực phụ thuộc vào cả kích thước (`float` có độ chính xác thấp hơn `double`) và giá trị cụ thể được lưu trữ (một số giá trị có thể được biểu diễn chính xác hơn những giá trị khác).
+
+Ví dụ, một số kiểu `float` có độ chính xác từ 6 đến 9 chữ số. Điều này có nghĩa là `float` có thể biểu diễn chính xác bất kỳ số nào có tới 6 chữ số có nghĩa. Một số có 7 đến 9 chữ số có nghĩa có thể được biểu diễn chính xác hay không tùy thuộc vào giá trị cụ thể. Và một số có độ chính xác hơn 9 chữ số chắc chắn sẽ không được biểu diễn chính xác.
+
+`double` có độ chính xác từ 15 đến 18 chữ số, với hầu hết các giá trị double có ít nhất 16 chữ số có nghĩa. `long double` có độ chính xác tối thiểu là 15, 18 hoặc 33 chữ số có nghĩa tùy thuộc vào số byte nó chiếm dụng.
+
+>**Lưu ý quan trọng**<br>
+>Một kiểu số thực chỉ có thể biểu diễn chính xác một số lượng nhất định các chữ số có nghĩa. Sử dụng một giá trị có nhiều chữ số có nghĩa hơn mức tối thiểu có thể dẫn đến việc giá trị được lưu trữ không chính xác.
+
+### **Xuất số thực ra màn hình**
+
+Khi xuất số thực, `std::cout` có độ chính xác mặc định là 6 - nghĩa là nó giả định tất cả các biến số thực chỉ có ý nghĩa đến 6 chữ số (độ chính xác tối thiểu của một `float`), và do đó nó sẽ cắt bỏ bất kỳ thứ gì sau đó.
+
+Chương trình sau đây cho thấy `std::cout` cắt thành 6 chữ số:
+>```
+>#include <iostream>
+>
+>int main() {
+>  std::cout << 9.87654321f << '\n';
+>  std::cout << 987.654321f << '\n';
+>  std::cout << 987654.321f << '\n';
+>  std::cout << 9876543.21f << '\n';
+>  std::cout << 0.0000987654321f << '\n';
+>
+>  return 0;
+>}
+>```
+
+Chương trình này xuất ra:
+>```
+>9.87654
+>987.654
+>987654
+>9.87654e+006
+>9.87654e-005
+>```
+
+Lưu ý rằng mỗi số này chỉ có 6 chữ số có nghĩa.
+
+Ngoài ra, lưu ý rằng `std::cout` sẽ chuyển sang xuất số theo ký hiệu khoa học trong một số trường hợp. Tùy thuộc vào trình biên dịch, số mũ thường được lấp đầy với một số chữ số tối thiểu. Đừng lo lắng, `9.87654e+006` giống với `9.87654e6`, chỉ khác là có thêm một vài số mũ 0. Số lượng tối thiểu chữ số mũ được hiển thị phụ thuộc vào trình biên dịch (Visual Studio sử dụng 3, một số trình biên dịch khác sử dụng 2 theo tiêu chuẩn C99).
+
+Chúng ta có thể ghi đè lên độ chính xác mặc định mà `std::cout` hiển thị bằng cách sử dụng **hàm thao tác xuất** có tên `std::setprecision()`. Hàm thao tác xuất thay đổi cách dữ liệu được xuất ra và được định nghĩa trong header `<iomanip>`.
+
+>```
+>#include <iomanip> // for output manipulator std::setprecision()
+>#include <iostream>
+>
+>int main() {
+>  std::cout << std::setprecision(17); // hiển thị 17 chữ số thập phân
+>  std::cout << 3.33333333333333333333333333333333333333f << '\n'; // hậu tố f nghĩa là float
+>  std::cout << 3.33333333333333333333333333333333333333 << '\n'; // không có hậu tố nghĩa là double
+>
+>  return 0;
+>}
+>```
+
+**Xuất ra:**
+>```
+>3.3333332538604736
+>3.3333333333333335
+>```
+
+Bởi vì chúng tôi đặt độ chính xác thành 17 chữ số có nghĩa trong hàm `std::setprecision()`, mỗi số ở trên được in với 17 chữ số. Nhưng, như bạn có thể thấy, các số chắc chắn không chính xác đến 17 chữ số! Và vì `float` kém chính xác hơn `double` nên `float` có nhiều lỗi hơn.
+
+>**Mẹo**<br>
+>Hàm thao tác xuất (và hàm thao tác nhập) có tính **dính**. Nghĩa là nếu bạn đặt giá trị cho chúng, giá trị đó sẽ được giữ nguyên cho các lần in/nhập tiếp theo.\
+>Ngoại lệ duy nhất là hàm `std::setw`. Một số hoạt động IO có thể đặt lại `std::setw`, vì vậy ta nên sử dụng `std::setw` mỗi khi cần thiết.
+
+Vấn đề về độ chính xác không chỉ ảnh hưởng đến các số thập phân mà còn ảnh hưởng đến bất kỳ số nào có quá nhiều chữ số có nghĩa. Hãy xem xét một số lớn:
+
+>```
+>#include <iomanip> // for std::setprecision()
+>#include <iostream>
+>
+>int main() {
+>  float f { 123456789.0f }; // f có 10 chữ số có nghĩa
+>  std::cout << std::setprecision(9); // để hiển thị 9 chữ số trong f
+>  std::cout << f << '\n';
+>
+>  return 0;
+>}
+>```
+
+Kết quả in ra:
+>`123456792`
+
+Số `123456792` lớn hơn `123456789`. Giá trị `123456789.0` có 10 chữ số có nghĩa, nhưng các giá trị `float` thường chỉ có độ chính xác khoảng `7` chữ số (và kết quả `123456792` chỉ chính xác đến 7 chữ số có nghĩa). Điều này có nghĩa là chúng ta đã mất một phần độ chính xác! Khi mất độ chính xác vì không thể lưu trữ số chính xác, đây được gọi là **lỗi làm tròn (rounding error)**.
+
+Do đó, cần thận trọng khi sử dụng số thực yêu cầu độ chính xác cao hơn khả năng lưu trữ của biến.
+
+>**Thực hành tốt nhất**<br>
+>Ưu tiên sử dụng `double` hơn `float` trừ khi dung lượng là hạn chế, vì thiếu độ chính xác trong `float` thường dẫn đến sai số.
+
+
+
+### **Các lỗi làm tròn khiến việc so sánh số thực trở nên khó khăn`**
+
+Số thực phức tạp để làm việc do những khác biệt không dễ thấy giữa số nhị phân (cách lưu trữ dữ liệu) và số thập phân (cách chúng ta suy nghĩ) về một giá trị. Xét phân số 1/10. Trong hệ thập phân, nó được biểu diễn dễ dàng dưới dạng 0.1, và chúng ta thường coi 0.1 là một số dễ biểu diễn với 1 chữ số có nghĩa. Tuy nhiên, trong hệ nhị phân, giá trị thập phân 0.1 được biểu diễn bởi chuỗi vô hạn: `0.00011001100110011…` Do đó, khi gán 0.1 cho một số thực, chúng ta sẽ gặp phải các vấn đề về độ chính xác.
+>```
+>#include <iomanip> // for std::setprecision()
+>#include <iostream>
+>
+>int main()
+>{
+>    double d {0.1};
+>    std::cout << d << '\n'; // sử dụng độ chính xác mặc định của cout là 6
+>    std::cout << std::setprecision(17);
+>    std::cout << d << '\n';
+>
+>    return 0;
+>}
+>```
+
+**Kết quả in ra:**
+>```
+>0.1
+>0.10000000000000001
+>```
+
+Ở dòng đầu tiên, `std::cout` in ra `0.1`, như mong đợi.
+
+Ở dòng dưới cùng, nơi chúng ta yêu cầu `std::cout` hiển thị 17 chữ số thập phân, chúng ta thấy rằng `d` thực ra không hoàn toàn bằng `0.1`! Điều này là do kiểu `double` phải cắt bớt giá trị xấp xỉ do bộ nhớ của nó bị hạn chế. Kết quả là một số chính xác đến 16 chữ số có nghĩa (đó là đảm bảo của kiểu `double`), nhưng số đó không chính xác bằng `0.1`. Lỗi làm tròn có thể khiến một số nhỏ hơn hoặc lớn hơn một chút, tùy thuộc vào vị trí xảy ra việc cắt bỏ giá trị.
+
+Lỗi làm tròn có thể dẫn đến những hậu quả không mong đợi:
+>```
+>#include <iomanip> // for std::setprecision()
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << std::setprecision(17);
+>
+>    double d1 { 1.0 };
+>    std::cout << d1 << '\n';
+>
+>    double d2 { 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 }; // đáng ra phải bằng 1.0
+>    std::cout << d2 << '\n';
+>
+>    return 0;
+>}
+>```
+
+>```
+>1
+>0.99999999999999989
+>```
+
+Mặc dù chúng ta có thể mong đợi `d1` và `d2` bằng nhau, nhưng chúng ta thấy rằng chúng không bằng nhau. Nếu chúng ta so sánh `d1` và `d2` trong chương trình, chương trình có thể sẽ không hoạt động như mong đợi. Do số thực thường không chính xác, việc so sánh số thực nói chung là một vấn đề rắc rối - chúng tôi sẽ thảo luận thêm về chủ đề này (và các giải pháp) trong bài **6.6 - Các toán tử quan hệ và so sánh số thực**.
+
+Một lưu ý cuối cùng về lỗi làm tròn: các phép toán (như cộng và nhân) có xu hướng khiến lỗi làm tròn tăng lên. Vì vậy, mặc dù `0.1` có lỗi làm tròn ở chữ số thập phân thứ 17, nhưng khi chúng ta cộng `0.1` mười lần, lỗi làm tròn đã lan sang chữ số thập phân thứ 16. Các phép toán tiếp tục sẽ khiến lỗi này trở nên đáng kể hơn.
+
+>**Lưu ý quan trọng:**<br>
+>Lỗi làm tròn xảy ra khi không thể lưu trữ chính xác một số. Điều này có thể xảy ra ngay cả với những số đơn giản, như 0.1. Do đó, lỗi làm tròn có thể, và thực sự, xảy ra mọi lúc. Lỗi làm tròn không phải là ngoại lệ - chúng là quy tắc. Không bao giờ giả định số thực của bạn là chính xác tuyệt đối.
+>
+>Một hệ quả phụ của quy tắc này là: hãy cẩn thận khi số dấu phẩy động cho dữ liệu tài chính hoặc tiền tệ.
+
+>**Nội dung liên quan**<br>
+>Để hiểu rõ hơn về cách các số dấu phẩy động được lưu trữ ở dạng nhị phân, hãy xem công cụ [float.expose](https://float.exposed/0x3dcccccd).
+>
+>Để tìm hiểu thêm về số dấu phẩy động và lỗi làm tròn, [floating-point-gui.de](https://floating-point-gui.de/) và [fabiensanglard.net](https://fabiensanglard.net/floating_point_visually_explained/index.html) có các hướng dẫn dễ tiếp cận về chủ đề này.
+
+
+
+### **`NaN` và `Inf` (Not a Number và Infinity)**
+
+Có hai loại đặc biệt của số thực:
+- `Inf` (Infinity): Biểu diễn vô cực, có thể là dương hoặc âm.
+- `NaN` (Not a Number): Không phải là một số. Có nhiều loại `NaN` khác nhau (chúng tôi sẽ không đề cập ở đây).
+
+`NaN` và `Inf` chỉ khả dụng nếu trình biên dịch sử dụng một định dạng cụ thể (IEEE 754) cho số thực. Nếu sử dụng định dạng khác, đoạn mã sau sẽ tạo ra hành vi bất định.
+
+Đây là một chương trình hiển thị cả ba loại số:
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    double zero {0.0};
+>    double posinf { 5.0 / zero }; // vô cực dương
+>    std::cout << posinf << '\n';
+>
+>    double neginf { -5.0 / zero }; // vô cực âm
+>    std::cout << neginf << '\n';
+>
+>    double nan { zero / zero }; // không phải là một số (không hợp lý về mặt toán học)
+>    std::cout << nan << '\n';
+>
+>    return 0;
+>}
+>```
+
+Kết quả chạy trên Visual Studio 2008 trên Windows:
+>```
+>1.#INF
+>-1.#INF
+>1.#IND
+>```
+
+`INF` là viết tắt của vô cực (infinity), và `IND` là viết tắt của không xác định (indeterminate). Lưu ý rằng kết quả của việc in ra `Inf` và `NaN` phụ thuộc vào nền tảng, vì vậy kết quả của bạn có thể khác nhau.
+
+>**Thực hành tốt nhất**<br>
+>Tốt nhất là nên tránh chia cho `0.0` hoàn toàn, ngay cả khi trình biên dịch của bạn hỗ trợ.
+
+### **Kết luận**
+
+Tóm lại, có hai điều bạn cần nhớ về số thực:
+- Số thực hữu ích để lưu trữ các số rất lớn hoặc rất nhỏ, bao gồm cả các số có phần thập phân.
+- Số thực thường có các lỗi làm tròn nhỏ, ngay cả khi số đó có ít chữ số có nghĩa hơn độ chính xác. Trong nhiều trường hợp, chúng ta không chú ý đến những lỗi này vì chúng rất nhỏ và vì các số được cắt bớt để hiển thị. Tuy nhiên, việc so sánh các số thực có thể không mang lại kết quả mong đợi. Thực hiện các phép toán trên các giá trị này sẽ khiến lỗi làm tròn tăng lên.
+
+## **Bài 4.9: <u>Giá trị logic (Boolean Values)</u>**
+
+Trong thực tế, chúng ta thường xuyên đặt ra hoặc được hỏi những câu hỏi chỉ có thể trả lời bằng "có" hoặc "không". Ví dụ: "Táo có phải là trái cây?" (Có) hoặc "Bạn có thích măng tây không?" (Không).
+
+Tương tự, ta có thể đặt ra những câu hỏi có thể trả lời bằng "đúng" hoặc "sai". Ví dụ: "Táo là một loại trái cây" (Đúng) hoặc "Tôi thích măng tây" (Sai).
+
+Những loại câu chỉ có hai kết quả khả thi này (có/đúng hoặc không/sai) rất phổ biến, do đó nhiều ngôn ngữ lập trình bao gồm một kiểu dữ liệu đặc biệt để xử lý chúng. Kiểu dữ liệu này được gọi là **Boolean** (Lưu ý: **Boolean** được viết hoa vì nó được đặt theo tên của nhà phát minh ra nó, George Boole).
+
+### **Biến Boolean**
+
+**Biến Boolean** là biến chỉ có thể có hai giá trị: `true` (đúng) và `false` (sai).
+
+Để khai báo một biến Boolean, chúng ta sử dụng từ khóa `bool`.
+>`bool b;`
+
+Để khởi tạo hoặc gán giá trị `true` hoặc `false` cho một biến Boolean, chúng ta sử dụng các từ khóa `true` và `false`.
+>```
+>bool b1 { true };
+>bool b2 { false };
+>b1 = false;
+>bool b3 {}; // mặc định khởi tạo thành false
+>```
+
+Giống như toán tử một ngôi "trừ" (`-`) có thể được sử dụng để tạo ra một số nguyên âm, toán tử logic **NOT** (`!`) có thể được sử dụng để đảo ngược giá trị Boolean từ `true` thành `false` hoặc `false` thành `true`:
+>```
+>bool b1 { !true }; // b1 sẽ được khởi tạo với giá trị false
+>bool b2 { !false }; // b2 sẽ được khởi tạo với giá trị true
+>```
+
+Giá trị Boolean không thực sự được lưu trữ trong các biến Boolean dưới dạng các từ `"true"` hoặc `"false"`. Thay vào đó, chúng được lưu trữ dưới dạng số nguyên: `true` trở thành số nguyên `1`, và `false` trở thành số nguyên `0`. Tương tự, khi các giá trị Boolean được đánh giá, chúng không thực sự được đánh giá thành `"true"` hoặc `"false"`. Chúng được đánh giá thành các số nguyên `0` (sai) hoặc `1` (đúng). 
+
+Vì Boolean thực sự lưu trữ các số nguyên, nên chúng được coi là một **kiểu dữ liệu giống số nguyên (integral type)**.
+
+### **In giá trị Boolean**
+
+Khi chúng ta in các giá trị Boolean, `std::cout` sẽ in `0` cho `false` và `1` cho `true`:
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << true << '\n'; // true được đánh giá thành 1
+>    std::cout << !true << '\n'; // !true được đánh giá thành 0
+>
+>    bool b {false};
+>    std::cout << b << '\n'; // b là false, được đánh giá thành 0
+>    std::cout << !b << '\n'; // !b là true, được đánh giá thành 1
+>    return 0;
+>}
+>```
+
+**Kết quả in:**
+>```
+>1
+>0
+>0
+>1
+>```
+
+Nếu bạn muốn `std::cout` in `"true"` hoặc `"false"` thay vì `0` hoặc `1`, bạn có thể sử dụng `std::boolalpha`. 
+
+**Đây là một ví dụ:**
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << true << '\n';
+>    std::cout << false << '\n';
+>
+>    std::cout << std::boolalpha; // in bool dưới dạng true hoặc false
+>
+>    std::cout << true << '\n';
+>    std::cout << false << '\n';
+>    return 0;
+>}
+>```
+
+**Kết quả in:**
+>```
+>1
+>0
+>true
+>false
+>```
+
+Bạn có thể sử dụng `std::noboolalpha` để tắt tính năng in `"true"` hoặc `"false"`.
+
+### **Chuyển đổi từ số nguyên sang Boolean**
+
+Khi sử dụng khởi tạo chuẩn (uniform initialization), bạn có thể khởi tạo biến bằng các giá trị số nguyên `0` (cho `false`) và `1` (cho `true`) (nhưng thực sự nên sử dụng `false` và `true` thay thế). Các giá trị số nguyên khác sẽ gây ra lỗi biên dịch:
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>	bool bFalse { 0 }; // okay: khởi tạo thành false
+>	bool bTrue  { 1 }; // okay: khởi tạo thành true
+>	bool bNo    { 2 }; // error: không được phép chuyển đổi thu hẹp kiểu dữ liệu
+>
+>	std::cout << bFalse << bTrue << bNo << '\n';
+>
+>	return 0;
+>}
+>```
+
+Tuy nhiên, trong bất kỳ ngữ cảnh khai báo nào cho phép chuyển đổi số nguyên sang Boolean, số nguyên `0` sẽ được chuyển đổi thành `false`, và bất kỳ số nguyên nào khác sẽ được chuyển đổi thành `true`.
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << std::boolalpha; // in bool dưới dạng true hoặc false
+>	
+>    bool b1 = 4 ; // khởi tạo sao chép cho phép chuyển đổi ẩn từ int sang bool
+>    std::cout << b1 << '\n';
+>
+>    bool b2 = 0 ; // khởi tạo sao chép cho phép chuyển đổi ẩn từ int sang bool
+>    std::cout << b2 << '\n';
+>    
+>    return 0;
+>}
+>```
+
+**Kết quả in ra:**
+>```
+>true
+>false
+>```
+
+**Lưu ý:** `bool b1 = 4;` có thể tạo ra cảnh báo. Nếu vậy, bạn cần tắt tính năng `"treating warnings as errors"` (coi cảnh báo như lỗi) để biên dịch ví dụ.
+
+### **Nhập giá trị Boolean**
+
+Nhập giá trị Boolean bằng `std::cin` đôi khi gây khó khăn cho người lập trình mới.
+
+Xem xét chương trình sau:
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    bool b{}; // mặc định khởi tạo thành false
+>    std::cout << "Nhập một giá trị Boolean: ";
+>    std::cin >> b;
+>    std::cout << "Bạn đã nhập: " << b << '\n';
+>    
+>    return 0;
+>}
+>```
+
+>```
+>Nhập một giá trị Boolean: true
+>Bạn đã nhập: 0
+>```
+
+Điều gì đã xảy ra vậy?
+
+Lý do là `std::cin` chỉ chấp nhận hai đầu vào cho biến Boolean: `0` (sai) và `1` (đúng). Bất kỳ đầu vào nào khác sẽ khiến `std::cin` hoạt động không chính xác mà không báo lỗi. Trong trường hợp này, vì chúng ta nhập `"true"`, `std::cin` đã sai sót và gán giá trị `false` cho biến `b`. Do đó, khi `std::cout` in giá trị của `b`, nó hiển thị `0`.
+
+Để cho phép `std::cin` chấp nhận `"false"` và `"true"` làm đầu vào, tùy chọn `std::boolalpha` phải được bật:
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    bool b{};
+>    std::cout << "Nhập một giá trị Boolean: ";
+>
+>    // Cho phép người dùng nhập "true" hoặc "false" cho giá trị Boolean
+>    // Phân biệt chữ hoa chữ thường, ví dụ: True hoặc TRUE sẽ không hoạt động
+>    std::cin >> std::boolalpha;
+>    std::cin >> b;
+>
+>    std::cout << "Bạn đã nhập: " << b << '\n';
+>
+>    return 0;
+>}
+
+>**Cảnh báo**<br>
+>Khi bật `std::boolalpha`, `0` và `1` sẽ không còn được coi là đầu vào Boolean mà sẽ được chuyển đổi thành `"false"` (cùng với bất kỳ đầu vào nào khác ngoài `"true"`).\
+>Bật `std::boolalpha` chỉ cho phép chấp nhận `"true"` và `"false"` viết thường. Các biến thể viết hoa sẽ không được chấp nhận.
+
+
+### **Giá trị trả về Boolean (Boolean Return Values)**
+
+Giá trị Boolean thường được sử dụng làm giá trị trả về cho các hàm kiểm tra xem một điều kiện nào đó là đúng hay sai. Các hàm này thường được đặt tên bắt đầu bằng từ **`is`** (ví dụ: `isEqual`) hoặc **`has`** (ví dụ: `hasCommonDivisor`).
+
+**Xem xét ví dụ sau về hàm `isEqual`:**
+>```
+>#include <iostream>
+>
+>// Trả về true nếu x và y bằng nhau, ngược lại trả về false
+>bool isEqual(int x, int y)
+>{
+>    return x == y; // toán tử == trả về true nếu x bằng y, ngược lại trả về false
+>}
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x{};
+>    std::cin >> x;
+>
+>    std::cout << "Nhập một số nguyên khác: ";
+>    int y{};
+>    std::cin >> y;
+>
+>    std::cout << std::boolalpha; // in bool dưới dạng true hoặc false
+>
+>    std::cout << x << " và " << y << " có bằng nhau không? ";
+>    std::cout << isEqual(x, y) << '\n'; // sẽ trả về true hoặc false
+>
+>    return 0;
+>}
+>```
+
+**Đây là kết quả chạy của chương trình:**
+>```
+>Nhập một số nguyên: 5
+>Nhập một số nguyên khác: 5
+>5 và 5 có bằng nhau không? true
+
+>```
+>Nhập một số nguyên: 6
+>Nhập một số nguyên khác: 4
+>6 và 4 có bằng nhau không? false
+>```
+
+**Giải thích hoạt động:**
+
+Đầu tiên, chương trình đọc các giá trị số nguyên cho `x` và `y`. Tiếp theo, biểu thức `isEqual (x, y)` được tính toán. Trong lần chạy đầu tiên, điều này dẫn đến việc gọi hàm `isEqual(5, 5)`. Bên trong hàm đó, `5 == 5` được đánh giá, tạo ra giá trị `true`. Giá trị `true` được trả về cho trình gọi để được in bởi `std::cout`. Trong lần chạy thứ hai, lệnh gọi `isEqual(6, 4)` trả về giá trị `false`.
+
+Mặc dù ban đầu giá trị Boolean có thể hơi khó làm quen, nhưng một khi bạn hiểu được cách thức hoạt động của chúng, bạn sẽ thấy chúng đơn giản và hữu ích! Giá trị Boolean đóng vai trò quan trọng trong ngôn ngữ lập trình C++, và bạn sẽ sử dụng chúng nhiều hơn tất cả các kiểu dữ liệu cơ bản khác cộng lại!
+
+## **Bài 4.10: <u>Giới thiệu về câu lệnh `if`</u>**
+
+Hãy tưởng tượng bạn đang đi chợ và bạn cùng phòng nói với bạn, *"nếu họ có bán dâu tây giảm giá, hãy mua một ít"*. Đây là một câu lệnh điều kiện, nghĩa là bạn chỉ thực hiện một hành động *("mua một ít")* khi điều kiện *("họ có bán dâu tây giảm giá")* là đúng.
+
+Những câu lệnh điều kiện như vậy rất phổ biến trong lập trình, vì chúng cho phép chúng ta triển khai hành vi theo điều kiện vào các chương trình của mình. Loại câu lệnh điều kiện đơn giản nhất trong C++ được gọi là câu lệnh `if`. Câu lệnh `if` cho phép chúng ta chỉ thực thi một (hoặc nhiều) dòng lệnh nếu một điều kiện nào đó là đúng.
+
+**Cấu trúc đơn giản nhất của câu lệnh `if` như sau:**
+>```
+>if (condition) true_statement;
+>```
+
+Để dễ đọc, cấu trúc này thường được viết thành:
+>```
+>if (condition)
+>    true_statement;
+>```
+
+**Điều kiện** (còn được gọi là **biểu thức điều kiện**) là một biểu thức được đánh giá thành giá trị Boolean (`true` hoặc `false`).
+
+Nếu điều kiện của câu lệnh `if` được đánh giá thành giá trị Boolean `true`, thì `true_statement` được thực thi. Ngược lại, nếu điều kiện được đánh giá thành giá trị Boolean `false`, thì `true_statement` sẽ bị bỏ qua.
+
+
+
+### **Ví dụ về chương trình sử dụng câu lệnh `if`**
+
+**Xét chương trình sau:**
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    if (x == 0)
+>        std::cout << "Giá trị bằng 0\n";
+>
+>    return 0;
+>}
+>```
+
+
+**Đây là kết quả chạy của chương trình:**
+>```
+>Nhập một số nguyên: 0
+>Giá trị bằng 0
+>```
+
+Chúng ta hãy xem xét chi tiết cách hoạt động của chương trình này.
+
+Đầu tiên, người dùng nhập một số nguyên. Sau đó, điều kiện `x == 0` được đánh giá. Toán tử so sánh bằng (`==`) được sử dụng để kiểm tra xem hai giá trị có bằng nhau hay không. Toán tử `==` trả về `true` nếu các toán hạng bằng nhau và `false` nếu chúng không bằng nhau. Vì `x` có giá trị `0` và `0 == 0` là `true`, biểu thức này được đánh giá thành `true`.
+
+Do điều kiện được đánh giá thành `true`, câu lệnh tiếp theo được thực thi, in ra `"Giá trị bằng 0"`.
+
+Đây là một lần chạy khác của chương trình này:
+>```
+>Nhập một số nguyên: 5
+>```
+
+Trong trường hợp này, `x == 0` được đánh giá thành `false`. Câu lệnh tiếp theo bị bỏ qua, chương trình kết thúc và không in thêm gì nữa.
+
+>**Cảnh báo**<br>
+>Câu lệnh `if` chỉ có thể thực thi có điều kiện một câu lệnh duy nhất. Chúng ta sẽ thảo luận về cách thực thi có điều kiện nhiều câu lệnh trong bài học 8.2 - Câu lệnh if và khối lệnh (If statements and blocks).
+
+### **Câu lệnh `if-else`**
+
+Trong ví dụ trên, nếu chúng ta muốn thông báo cho người dùng rằng số họ nhập vào khác `0` thì sao?
+
+**Chúng ta có thể viết như thế này:**
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    if (x == 0)
+>        std::cout << "Giá trị bằng 0\n";
+>    if (x != 0)
+>        std::cout << "Giá trị khác 0\n";
+>
+>    return 0;
+>}
+>```
+
+**Hoặc như thế này:**
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    bool zero { (x == 0) };
+>    if (zero)
+>        std::cout << "Giá trị bằng 0\n";
+>    if (!zero)
+>        std::cout << "Giá trị khác 0\n";
+>
+>    return 0;
+>}
+>```
+
+Cả hai chương trình này đều phức tạp hơn mức cần thiết. Thay vào đó, chúng ta có thể sử dụng một dạng khác của câu lệnh `if` được gọi là `if-else`. Cấu trúc của `if-else` như sau:
+>```
+>if (condition)
+>    true_statement;
+>else
+>    false_statement;
+>```
+
+Nếu điều kiện được đánh giá thành giá trị Boolean `true`, thì `true_statement` được thực thi. Ngược lại, `false_statement` sẽ được thực thi.
+
+**Hãy sửa đổi chương trình trước đó của chúng ta để sử dụng `if-else`:**
+>```
+>#include <iostream>
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    if (x == 0)
+>        std::cout << "Giá trị bằng 0\n";
+>    else
+>        std::cout << "Giá trị khác 0\n";
+>
+>    return 0;
+>}
+>```
+
+**Bây giờ chương trình của chúng ta sẽ tạo ra đầu ra sau:**
+>```
+>Nhập một số nguyên: 0
+>Giá trị bằng 0
+>Nhập một số nguyên: 5
+>Giá trị khác 0
+>```
+
+### **Nối tiếp các câu lệnh `if` (chaining `if` statements)**
+
+Trong lập trình, đôi khi chúng ta cần kiểm tra nhiều điều kiện theo thứ tự. Để thực hiện điều này, chúng ta có thể sử dụng các câu lệnh `if` (hoặc `if-else`) nối tiếp nhau.
+
+**Ví dụ:**
+>```
+>#include <iostream>
+>
+>int main() {
+>  std::cout << "Nhập một số nguyên: ";
+>  int x;
+>  std::cin >> x;
+>
+>  if (x > 0) {
+>    std::cout << "Giá trị dương\n";
+>  } else if (x < 0) {
+>    std::cout << "Giá trị âm\n";
+>  } else {
+>    std::cout << "Giá trị bằng 0\n";
+>  }
+>
+>  return 0;
+>}
+>```
+
+**Đây là kết quả chạy của chương trình trong một vài trường hợp:**
+>```
+>Nhập một số nguyên: 4
+>Giá trị dương
+>```
+
+>```
+>Nhập một số nguyên: -3
+>Giá trị âm
+>```
+
+>```
+>Nhập một số nguyên: 0
+>Giá trị bằng 0
+>```
+
+**Giải thích:**
+
+Toán tử so sánh `<` được dùng để kiểm tra xem một giá trị có nhỏ hơn giá trị khác hay không. Tương tự, toán tử so sánh `>` dùng để kiểm tra xem một giá trị có lớn hơn giá trị khác hay không. Cả hai toán tử này đều trả về giá trị **Boolean** (`true` hoặc `false`).
+Chương trình có thể in ra nhiều kết quả khác nhau phụ thuộc vào điều kiện được đáp ứng.
+
+
+
+**Lưu ý:** Bạn có thể nối tiếp các câu lệnh `if` nhiều lần tùy thuộc vào số điều kiện cần kiểm tra. Cách sử dụng này sẽ được minh họa rõ hơn trong phần bài tập ở cuối bài.
+
+
+### **Giá trị trả về Boolean và câu lệnh `if`**
+
+Trong bài học trước ([**4.9 - Giá trị logic**](lesson4_9.ipynb)), chúng ta đã viết một chương trình sử dụng hàm để trả về giá trị Boolean:
+>```
+>#include <iostream>
+>
+>// Kiểm tra xem x và y có bằng nhau không (true nếu bằng, false nếu khác)
+>bool isEqual(int x, int y)
+>{
+>    return x == y; // Toán tử == trả về true nếu x bằng y, và false nếu khác
+>}
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    std::cout << "Nhập một số nguyên khác: ";
+>    int y {};
+>    std::cin >> y;
+>
+>    std::cout << std::boolalpha; // In giá trị Boolean dưới dạng true hoặc false
+>
+>    std::cout << x << " và " << y << " có bằng nhau không? ";
+>    std::cout << isEqual(x, y); // Sẽ trả về true hoặc false
+>
+>    std::cout << '\n';
+>
+>    return 0;
+>}
+>```
+
+Bây giờ, chúng ta hãy cải thiện chương trình này bằng cách sử dụng câu lệnh `if`:
+>```
+>#include <iostream>
+>
+>// Kiểm tra xem x và y có bằng nhau không (true nếu bằng, false nếu khác)
+>bool isEqual(int x, int y)
+>{
+>    return x == y; // Toán tử == trả về true nếu x bằng y, và false nếu khác
+>}
+>
+>int main()
+>{
+>    std::cout << "Nhập một số nguyên: ";
+>    int x {};
+>    std::cin >> x;
+>
+>    std::cout << "Nhập một số nguyên khác: ";
+>    int y {};
+>    std::cin >> y;
+>
+>    if (isEqual(x, y))
+>        std::cout << x << " và " << y << " bằng nhau\n";
+>    else
+>        std::cout << x << " và " << y << " không bằng nhau\n";
+>
+>    return 0;
+>}
+>```
+
+**Giải thích:**
+- Biểu thức điều kiện trong trường hợp này đơn giản là việc gọi hàm `isEqual`, vốn sẽ trả về một giá trị Boolean.
+- Chương trình kiểm tra giá trị trả về của hàm `isEqual` bằng câu lệnh `if`.
+    - Nếu `isEqual` trả về `true` (nghĩa là `x` và `y` bằng nhau), dòng lệnh trong khối `if` sẽ được thực thi.
+    - Ngược lại, nếu `isEqual` trả về `false` (nghĩa là `x` và `y` khác nhau), dòng lệnh trong khối `else` sẽ được thực thi.
+
+**Ưu điểm:**
+- Sử dụng câu lệnh `if` với hàm trả về giá trị Boolean giúp code dễ đọc và dễ hiểu hơn.
+- Tách biệt logic kiểm tra điều kiện ra thành một hàm riêng, giúp code có tính mô-đun hơn và dễ dàng tái sử dụng.
+
+**Chạy thử:**
+>```
+>Nhập một số nguyên: 5
+>Nhập một số nguyên khác: 5
+>5 và 5 bằng nhau
+>```
+
+>```
+>Nhập một số nguyên: 6
+>Nhập một số nguyên khác: 4
+>6 và 4 không bằng nhau
+>```
+
+**Lưu ý:** Bất kỳ hàm nào trả về giá trị Boolean đều có thể được sử dụng trong biểu thức điều kiện của câu lệnh `if`.
+
+### **Điều kiện không phải Boolean (Non-Boolean conditionals)**
+
+Trong các ví dụ trước đó, điều kiện của câu lệnh `if` đều là các giá trị Boolean (`true` hoặc `false`), biến Boolean hoặc hàm trả về giá trị Boolean. Nhưng điều gì xảy ra nếu điều kiện là một biểu thức không được tính toán thành giá trị Boolean?
+
+**Sẽ có phép chuyển đổi ngầm**
+
+Trong trường hợp này, biểu thức điều kiện sẽ được chuyển đổi ngầm sang giá trị Boolean. Các quy tắc chuyển đổi như sau:
+- Giá trị khác `0` được chuyển thành `true`.
+- Giá trị bằng `0` được chuyển thành `false`.
+
+**Ví dụ:**
+>```
+>#include <iostream>
+>
+>int main() {
+>  if (4) // Không hợp lý nhưng dùng để minh họa
+>    std::cout << "hi\n";
+>  else
+>    std::cout << "bye\n";
+>
+>  return 0;
+>}
+>```
+
+Kết quả chạy sẽ in ra `"hi"` vì `4` là giá trị khác `0` nên được chuyển đổi thành `true`, khiến câu lệnh trong khối `if` được thực thi.
+
+**Lưu ý:**
+- Mặc dù cú pháp cho phép điều kiện không phải Boolean, nhưng đây thường không phải là cách viết code tốt.
+- Sử dụng các biểu thức trả về giá trị Boolean rõ ràng sẽ giúp code dễ đọc và dễ hiểu hơn.
+- Tránh sử dụng các phép chuyển đổi ngầm này trừ khi bạn hiểu rõ tác dụng của chúng và chắc chắn rằng chúng sẽ không gây ra lỗi.
+
+    **Sử dụng điều kiện Boolean rõ ràng**
+    >```
+    >#include <iostream>
+    >
+    >int main() {
+    >  int x = 4;
+    >  if (x != 0) // Điều kiện rõ ràng
+    >    std::cout << "x khác 0\n";
+    >  else
+    >    std::cout << "x bằng 0\n";
+    >
+    >  return 0;
+    >}
+    >```
+
+    Trong đoạn code này, điều kiện `x != 0` rõ ràng hơn so với việc dựa vào phép chuyển đổi ngầm.
+
+### **Câu lệnh `if` và early return (If-statements and early returns)**
+
+**Early Return là gì?**
+
+Trong lập trình, **early return** (trả về sớm) là một câu lệnh `return` xuất hiện bên trong một hàm nhưng không phải là dòng lệnh cuối cùng. Khi gặp early return, hàm sẽ dừng thực thi và trả về giá trị cho bên hàm gọi (caller) ngay lập tức, thay vì thực hiện đến hết hàm như thông thường.
+
+Ví dụ về early return không cần thiết:
+>```
+>void print() {
+>  std::cout << "A" << '\n';
+>
+>  return; // Hàm luôn trả về cho bên gọi tại đây
+>
+>  std::cout << "B" << '\n'; // Dòng này không bao giờ được in ra
+>}
+>```
+
+Trong ví dụ này, vì `return;` luôn được thực thi trước, dòng `std::cout << "B" << '\n';` sẽ không bao giờ được thực hiện. Do đó, thay vì dùng early return không cần thiết, chúng ta có thể loại bỏ dòng `std::cout << "B" << '\n';` và lúc này return không còn là early return nữa.
+
+**Sử dụng early return kết hợp với câu lệnh `if`:**
+
+Tuy nhiên, khi kết hợp với câu lệnh `if`, early return trở thành một cách hữu ích để kiểm soát giá trị trả về của hàm dựa trên điều kiện.
+>```
+>#include <iostream>
+>
+>// Tính giá trị tuyệt đối của x
+>int abs(int x) {
+>  if (x < 0)
+>    return -x; // Early return (chỉ khi x < 0)
+>
+>  return x;
+>}
+>
+>int main() {
+>  std::cout << abs(4) << '\n'; // In ra 4
+>  std::cout << abs(-3) << '\n'; // In ra 3
+>
+>  return 0;
+>}
+>```
+
+Khi gọi `abs(4)`, giá trị của `x` là `4`. Điều kiện `if (x < 0)` sai nên early return không được thực thi. Hàm trả về giá trị `x` (bằng `4`) cho bên gọi ở cuối hàm.
+
+Khi gọi `abs(-3)`, giá trị của `x` là `-3`. Điều kiện `if (x < 0)` đúng nên early return được thực thi. Hàm trả về `-x` (bằng `3`) cho bên gọi tại thời điểm này.
+
+Trước đây, việc sử dụng **early return** thường không được khuyến khích. Tuy nhiên, trong lập trình hiện đại, **early return** được chấp nhận rộng rãi hơn, đặc biệt khi chúng giúp đơn giản hóa hàm hoặc dừng hàm sớm do lỗi.
+
+>**Bài học liên quan:**<br>
+>Bài 8.11 - Break và Continue sẽ thảo luận chi tiết hơn về tranh cãi liên quan đến early return.\
+>Bài 8.2 - Câu Lệnh if và Khối Lệnh sẽ tiếp tục khám phá về các câu lệnh if.
+
+### **Bài tập**
+
+**Câu hỏi #1:** Early return (trả về sớm) là gì và hoạt động như thế nào?
+<details>
+<summary><b>Đáp án:</b></summary>
+
+Early return là một câu lệnh `return` xuất hiện bên trong một hàm nhưng không phải là dòng lệnh cuối cùng. Khi gặp early return, hàm sẽ dừng thực thi và trả về giá trị cho hàm gọi (caller) ngay lập tức, thay vì thực hiện đến hết hàm như thông thường.
+</details>
+
+**Câu hỏi #2:** Số nguyên tố là một số tự nhiên lớn hơn 1 chỉ chia hết cho 1 và chính nó. Viết chương trình yêu cầu người dùng nhập một số từ 0 đến 9 (bao gồm cả 0 và 9). Nếu người dùng nhập một số nguyên tố (2, 3, 5 hoặc 7), hãy in ra "The digit is prime" (Số này là số nguyên tố). Ngược lại, hãy in ra "The digit is not prime" (Số này không phải số nguyên tố). 
+<details>
+<summary><b>Gợi ý:</b></summary>
+  
+Sử dụng chuỗi các câu lệnh `if-else` để so sánh số người dùng nhập với các số nguyên tố và kiểm tra xem có khớp hay không.
+
+
+</details>
+<details>
+<summary><b>Đáp án:</b></summary>
+
+>```
+>#include <iostream>
+>
+>bool isPrime(int x) {
+>  if (x == 2) // Nếu người dùng nhập 2, đây là số nguyên tố
+>    return true;
+>  else if (x == 3) // Nếu người dùng nhập 3, đây là số nguyên tố
+>    return true;
+>  else if (x == 5) // Nếu người dùng nhập 5, đây là số nguyên tố
+>    return true;
+>  else if (x == 7) // Nếu người dùng nhập 7, đây là số nguyên tố
+>    return true;
+>
+>  return false; // Nếu người dùng không nhập 2, 3, 5, 7, thì số này không phải số nguyên tố
+>}
+>
+>int main() {
+>  std::cout << "Enter a number 0 through 9: ";
+>  int x;
+>  std::cin >> x;
+>
+>  if (isPrime(x))
+>    std::cout << "The digit is prime\n";
+>  else
+>    std::cout << "The digit is not prime\n";
+>
+>  return 0;
+>}
+>```
+
+>**Đối với người đọc nâng cao:**<br>
+>Nếu hàm `isPrime()` ở trên có vẻ hơi dài dòng/lặp lại thì đúng là như vậy. Chúng ta có thể viết `isPrime()` gọn hơn và hiệu quả hơn bằng cách sử dụng một số khái niệm sẽ được giải thích trong các bài học tiếp theo.
+>
+>- Sử dụng toán tử logic **OR** (`||`) ([Bài 6.7 - Toán tử logic]()):
+>
+>>```
+>>bool isPrime(int x) {
+>>  return x == 2 || x == 3 || x == 5 || x == 7; // Nếu người dùng nhập 2 hoặc 3 hoặc 5 hoặc 7, đây là số nguyên tố
+>>}
+>>```
+>
+>- Sử dụng câu lệnh `switch` ([Bài 8.5 - Giới thiệu về câu lệnh switch]()):
+>
+>>```
+>>bool isPrime(int x) {
+>>  switch (x) {
+>>    case 2: // Nếu người dùng nhập 2
+>>    case 3: // Hoặc nếu người dùng nhập 3
+>>    case 5: // Hoặc nếu người dùng nhập 5
+>>    case 7: // Hoặc nếu người dùng nhập 7
+>>      return true; // Thì đây là số nguyên tố
+>>  }
+>>
+>>  return false; // Ngược lại thì số này không phải số nguyên tố
+>>}
+>>```
+</details>
+
+
+**Câu hỏi #3**: Làm thế nào để giảm độ dài của đoạn code sau (không thay đổi định dạng)?
+>```
+>#include <iostream>
+>
+>bool isAllowedToTakeFunRide()
+>{
+>  std::cout << "How tall are you? (cm)\n";
+>
+>  double height{};
+>  std::cin >> height;
+>
+>  if (height >= 140.0)
+>    return true;
+>  else
+>    return false;
+>}
+>
+>int main()
+>{
+>  if (isAllowedToTakeFunRide())
+>    std::cout << "Have fun!\n";
+>  else
+>    std::cout << "Sorry, you're too short.\n";
+>
+>  return 0;
+>}
+>```
+<details>
+    <summary><b>Đáp án:</b></summary>
+
+Chúng ta không cần câu lệnh `if` trong `isAllowedToTakeFunRide()`. Biểu thức `height >= 140.0` được đánh giá thành thành giá trị `bool`, có thể được trả về trực tiếp.
+>```
+>bool isAllowedToTakeFunRide()
+>{
+>  std::cout << "How tall are you? (cm)\n";
+>
+>  double height{};
+>  std::cin >> height;
+>
+>  return height >= 140.0;
+>}
+>```
+
+Bạn không bao giờ cần câu lệnh `if` có dạng:
+>```
+>if (condition)
+>  return true;
+>else
+>  return false;
+>```
+
+Bởi điều này có thể được thay thế bằng câu lệnh trả về `return condition`.
+
+Tóm lại, khi biểu thức trả về giá trị `bool` (`true` hoặc `false`), bạn có thể trực tiếp trả về giá trị của biểu thức đó thay vì sử dụng câu lệnh `if` để kiểm tra và trả về `true` hoặc `false`.
+</details>
+
 
 
 ```python
